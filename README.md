@@ -48,7 +48,7 @@ This command line will run a Typemill instance without data persistance (all dat
 
 `docker run --rm --name=typemill-demo --net=host aberty/typemill-docker`
 
-* note that it will fail if port 80 is already in use on the system. In this case, please have a look on the more _Typical example_ below
+* note that it will fail if port 80 is already in use on the system. In this case, please have a look on the more _Typical usage_ example below
 * the `--rm` switch means that the container will be cleared from memory when you'll stop it
 * the `--name` parameter gives a non-random name to the container, allowing to stop it more easily
 * to stop the container, use this command : `docker stop typemill-demo`
