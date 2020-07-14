@@ -33,3 +33,42 @@ As TYPEMILL itself, this image has been designed to be easy to use : no extra se
 
 * `TYPEMILL_UID` : id of the system user (defaults to 33 which corresponds to default UID for `www-data` user who runs Apache under Debian)
 * `TYPEMILL_GID` : id of the system group (defaults to 33 too)
+
+### Ports
+
+Apache listens on *port 80* (HTTP). There is no built-in support for HTTPS in this image.
+
+### Examples
+
+Depending on you system's configuration, you may need to use `sudo` before `docker` command.
+
+#### Quick & dirty (demo)
+
+This command line will run a Typemill instance without data persistance (all data will be lost when the container will stop) on port 80 under default user UID/GID :
+
+`docker run --rm --name=typemill-demo aberty/typemill-docker`
+
+* the `--rm` switch means that the container will be cleared from memory when you'll stop it
+* the `--name` parameter gives a non-random name to the container, allowing to stop it more easily
+* to stop the container, use this command : `docker stop typemill-demo`
+
+#### Typical usage
+
+* let's say you want to save Typemill's data directories under `/var/typemill` path.
+* using an optional `typemill` docker network for Typemill, created via `docker network create typemill`
+* giving `1000:1000` as UID/GID to run Typemill
+* assuming you want to run the tool on port `8080`
+
+```
+docker run --rm \
+    --name=typemill \
+    --net=typemill \
+    -p 8080:80 \
+    -e TYPEMILL_UID=1000 \
+    -e TYPEMILL_GID=1000 \
+    -v /var/typemill/settings/:/var/www/html/settings/ \
+    -v /var/typemill/cache/:/var/www/html/cache/ \
+    -v /var/typemill/content/:/var/www/html/content/ \
+    -v /var/typemill/media/:/var/www/html/media/ \
+    aberty/typemill-docker
+```
